@@ -1,0 +1,35 @@
+Thank you all for joinging me today to talk about service workers! 
+
+My name is Victoria. I work for a web company called Cloudflare. Over 2 years now which in startup land makes me Cloudflare artifact
+but not really an artifact. After time as a support engineer, I just started as a developer for the Cloudflare Apps platform recently
+
+Let's talk about workers. What can workers do you us as a JS developer to make your site / web app / life better?What better way to demostrate this than to give some solid 
+examples. I will break down the high level basics of what a worker is and then go over some examples of how to use them
+
+What are workers ? Workers run away from your browser window's javascript to intercept requests and control the response 
+to that request however one wishes. This interception can happen when your back end server is on or offline
+This opens a window of possiblities from optimizing caching to push notifications
+
+Where exactly is this code living and running? First, let's understand that Service Workers is a modern browser supported API that does run in your browser's 
+tab, but on a seperate background thread. Even if you close the tab that initated the worker, the worker can still run. Web workers can also live on proxy 
+servers such as Cloudflare or maybe other service like when eventually  AWS catches up  Lamdba on the Edge. In the proxy worker case, the script can run on 
+multiple data centers. This is similarity to a service worker in that the script isn't running on the window's thread, but now the worker can intercept ANY request
+not requiring browser support or even at a browser at all. There are more subtle differences but i won't get too into that now and will save the specifics for 
+Q&A.
+
+Ok, let's get into the good stuff. What can workers actually DO? Service workers can help us with caching. Let's take a look at a really basic example.
+Setup an install listener to preCache right when the SW is installed
+SW has a built in event called installed. Note this is not true for all web workers like Cloudflare workers. 
+
+
+Now, we will try to get ANY request from cache, if it's not there we will add the request to
+that cache specified by CACHE_VERSION regardless if it was in preCache files or not
+
+Keep in mind this is a totally bungues example. Caching EVERYTHING static and
+dynamic on your site is crazy and should probably only happen in special cases
+when your site is actually down, but jsut work with me here for illustrative purposes
+
+Much of the progressiveness of progressive web apps come from the offline capability. Looking into an offline Step one, setup a "safety" page that 
+is precached when the worker was installed. Keep in mind this is all on the browser level. We will use the same install listener 
+to call preCache that we did in the previous example. For every fetch, check that the fetch did not fail and that the response returned was 
+"ok". If not, serve that safety page we precached in the prior step.

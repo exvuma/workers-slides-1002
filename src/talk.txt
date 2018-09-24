@@ -1,0 +1,93 @@
+To Cache..
+
+first populate the cache on installing the worker
+
+
+self.addEventListener('install', function (event) {
+    event.waitUntil(preCacheFunc()) 
+})
+
+First let's setup an install listener to preCache right when the SW is installed
+
+var CACHE_VERSION = 'name-of-my-cache';
+var CACHE_FILES = [
+    '/whatever-i-want-to-precache.jpg',
+    '/more-precache.html',
+    'http://localhost:8080/src/images/xmaskitty.jpg'
+];
+var preCacheFunc = function(){
+    return caches.open(CACHE_VERSION)
+        .then(function (cache) {
+            return cache.addAll(CACHE_FILES);
+        })
+}
+
+pre cache all the files that we specify by some CACHE_FILES
+
+self.addEventListener('fetch', function (event) {
+    event.respondWith(grabFromCacheOrAdd(event.request))
+});
+
+now we'll set an event listener for any fetch on the scope of this SW.
+
+function grabFromCacheOrAdd(req) {
+    return caches.open(CACHE_VERSION).then(function (cache) {
+        return cache.match(req).then(function (matching) {
+            if (matching) {
+                return matching
+            } else {
+                return cache.add(req)
+            }
+        });
+    });
+}
+Now, we will try to get the request from cache, if it's not there we will add ALL requests to
+that cache specified by CACHE_VERSION regardless if it was in preCache files or not
+
+Keep in mind this is a totally bungues example. Caching EVERYTHING static and
+dynamic on your site is crazy and should probably only happen in special cases
+when your site is actually down, but jsut work with me here for illustrative purposes
+
+You can do othr cool things
+
+
+
+####################
+
+CORS
+
+Ever been really annoyed of developing with CORS errors ?
+
+```
+Failed to load http://missv.info/external: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://local.missv.info:8080' is therefore not allowed access. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+```
+https://cl.ly/063F38353m1s
+
+ Service workers provide a hacky work around for 
+dealing with CORS. One could communicate with whatever external host they want by running a service worker
+that pretends to be that external host but on the host actually rnnning
+
+Ok, that sounded confusing so let's see what that would actually look like
+
+You want to run:
+
+```
+fetch('https://www.google.com')
+fetch('http://some-other-host-aint-me.com')
+```
+
+In service worker
+
+```
+const myExtralsURI = '/external/'
+addEventListener('fetch', event => {
+  event.respondWith(handleRequest(event.request))
+})
+
+async function handleRequest(request) {
+    const strippedURI = request.url.toString().split(myExtralsURI)
+    const externalURL = 'http://' + strippedURI[1]
+    return await fetch(externalURL)
+}
+
+```

@@ -2,78 +2,90 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-  mode:'production',
-  entry:{
-    index: './src/index.js',
+  mode: "production",
+  entry: {
+    index: "./src/index.js",
 
-    server: './sw-push.js'
+    server: "./sw-push.js"
   },
   output: {
-    path: __dirname + '/dist',
-    filename: '[name].js'
+    path: __dirname + "/dist",
+    filename: "[name].js"
+  },
+  devServer: {
+    //https://webpack.js.org/configuration/stats/
+    stats: {
+      all: undefined,
+
+      assets: false,
+      modules: false,
+      warnings: false,
+      moduleTrace: false,
+      errors: true,
+      errorDetails: true
+    }
   },
 
-
-  devtool: 'inline-source-map',
+  devtool: "inline-source-map",
   plugins: [
-    new HtmlWebpackPlugin({ template: 'src/index.html' }),
+    new HtmlWebpackPlugin({ template: "src/index.html" }),
     new HtmlWebpackPlugin({
-      title: 'Workers Test',
-      template: 'workers-test.html',
-      filename:'sw.html'
+      title: "Workers Test",
+      template: "workers-test.html",
+      filename: "sw.html"
     }),
     new HtmlWebpackPlugin({
-      title: 'My App',
-      template: 'wsj.html',
-      filename:'wsj.html'
+      title: "My App",
+      template: "wsj.html",
+      filename: "wsj.html"
     }),
     new HtmlWebpackPlugin({
-      title: 'My App',
-      template: './src/safety.html',
-      filename:'safety.html'
+      title: "My App",
+      template: "./src/safety.html",
+      filename: "safety.html"
     }),
     new CopyWebpackPlugin([
       {
-        from: './node_modules/reveal.js/plugin/',
-        to: 'plugin/'
+        from: "./node_modules/reveal.js/plugin/",
+        to: "plugin/"
       }
     ]),
     new CopyWebpackPlugin([
       {
-        from: './src/images/',
-        to: 'images/'
+        from: "./src/images/",
+        to: "images/"
       }
     ]),
     new CopyWebpackPlugin([
       {
-        from: './workers-test/',
-        to: 'workers-test/'
+        from: "./workers-test/",
+        to: "workers-test/"
       }
     ]),
     new CopyWebpackPlugin([
       {
-        from: './wa-push.js',
-        to: 'wa-push.js'
+        from: "./wa-push.js",
+        to: "wa-push.js"
       }
     ]),
     new CopyWebpackPlugin([
       {
-        from: './sw-push.js',
-        to: 'sw-push.js'
+        from: "./sw-push.js",
+        to: "sw-push.js"
       }
     ]),
     new CopyWebpackPlugin([
       {
-        from: './sw-offline.js',
-        to: 'sw-offline.js'
+        from: "./sw-offline.js",
+        to: "sw-offline.js"
       }
     ]),
     new CopyWebpackPlugin([
       {
-        from: './sw-cache.js',
-        to: 'sw-cache.js'
+        from: "./sw-cache.js",
+        to: "sw-cache.js"
       }
-    ]),
+    ])
   ],
   module: {
     // loaders: [
@@ -84,24 +96,24 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-        // loader: "style!css" 
+        use: ["style-loader", "css-loader"]
+        // loader: "style!css"
       },
       {
         test: /\.eot(\?\S*)?$/,
-        loader: 'url-loader?limit=100000&mimetype=application/vnd.ms-fontobject'
+        loader: "url-loader?limit=100000&mimetype=application/vnd.ms-fontobject"
       },
       {
         test: /\.woff2(\?\S*)?$/,
-        loader: 'url-loader?limit=100000&mimetype=application/font-woff2'
+        loader: "url-loader?limit=100000&mimetype=application/font-woff2"
       },
       {
         test: /\.woff(\?\S*)?$/,
-        loader: 'url-loader?limit=100000&mimetype=application/font-woff'
+        loader: "url-loader?limit=100000&mimetype=application/font-woff"
       },
       {
         test: /\.ttf(\?\S*)?$/,
-        loader: 'url-loader?limit=100000&mimetype=application/font-ttf'
+        loader: "url-loader?limit=100000&mimetype=application/font-ttf"
       },
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
@@ -115,10 +127,12 @@ module.exports = {
         test: /\.(png|jpg|gif)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
             options: {}
           }
         ]
       }
-    ]}
-}
+    ]
+  }
+};
+        

@@ -52,3 +52,6 @@
   .code-row>.right-block pre{
       font-size: 40%;
   }
+  body .reveal section img{
+    border:none;
+  }

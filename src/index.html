@@ -16,10 +16,10 @@
 
     <!-- <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/solarized.css" id="theme"> -->
-    <link rel="stylesheet" href="src/workers-pres.css">
+    <!-- <link rel="stylesheet" href="src/workers-pres.css"> -->
 
     <!-- Theme used for syntax highlighting of code -->
-    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> --> 
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
 
     <!-- Printing and PDF exports -->
     <!-- <script>
@@ -43,13 +43,14 @@
       <div class="slides">
         <section>
           <h1>Putting Workers to Work</h1>
-                    <h3>Victoria Bernard</h3>
-                    <h3>May 17, 2018</h3>
+          <h3>Victoria Bernard</h3>
+          <h3>Oct 2nd, 2018</h3>
           <p>
             <small>Created by <a href="http://Victoriabernard.com">Victoria Bernard</a> and <a href="https://github.com/hakimel/reveal.js/graphs/contributors">contributors</a></small>
           </p>
           <aside class="notes">
-            Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes
+            Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the
+            speaker notes
             window (hit »S« on your keyboard). See me by pressing fn + s in the browser.
           </aside>
         </section>
@@ -58,17 +59,28 @@
           <img src="images/babyme.png" style="height:640px">
         </section>
         <section>
-          <img src="https://i.imgflip.com/2ahhq5.jpg">
+          <section>
+            <h2>Local Computing</h2>
+            <img src="images/woman-computing.jpg">
+          </section>
+          <section>
+            <h2>Server Computing</h2>
+            <img src="images/cablefail.jpg">
+          </section>
+          <section>
+            <h2>Serverless Computing</h2>
+            <img src="images/Cloud-mine.png">
+          </section>
         </section>
         <section>
           <h2> Agenda</h2>
           <ul>
-            <li >What are workers?</li>
-            <span ></span>
-            <li >Examples of how to use</li>
-            <span ></span>
-            <li >Q and A</li>
-            <span ></span>
+            <li>What are workers?</li>
+            <span></span>
+            <li>Examples of how to use</li>
+            <span></span>
+            <li>Q and A</li>
+            <span></span>
           </ul>
         </section>
         <section>
@@ -102,7 +114,7 @@
               <ul>
 
                 <li>not JS on users browser's window</li>
-              </ul> 
+              </ul>
             </aside>
             <!-- <div class="cite">From
               <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">Mozilla</a>
@@ -110,304 +122,53 @@
 
           </section>
           <section>
-            <h2>Browser Service Workers</h2>
-            <img src="images/service-worker.png">
-          </section>
-          <section>
-            <h2>Cloudflare Workers</h2>
-            <div class="fragment fade-up code-row">
-              <div class="left-block">
-                <p style="text-align: right;">
-                  In the window's JS one must register the service worker
-                </p>
-              </div>
-              <div class="right-block">
-                <pre>
-                  <code class="javascript" data-trim contenteditable style="font-size: 1em;" >
-                     navigator.serviceWorker.register('sw.js', 
-                      { scope: '/path-to-control' })
-                  </code>
-                </pre>
-              </div>
-            </div>
-            <div class="fragment fade-up code-row">
-              <div class="left-block">
-                <p style="text-align: right;">
-                  One example eventListener
-                </p>
-              </div>
-              <div class="right-block">
-                <pre>
-                  <code class="javascript" data-trim contenteditable style="font-size: 1em;" >
-                    self.addEventListener('install', function (event) { 
-                      event.waitUntil(preSWWork()) 
-                    })
-                  </code>
-                </pre>
-              </div>
-            </div>
+            <h1>Service Workers</h1>
+            <img src="images/browser-diagram.png">
           </section>
           <section>
             <h1>Cloudflare Workers</h1>
-            <img src="images/cf-worker.png">
+            <img src="images/workers-diagram.png">
           </section>
-        </section>				
-        <section data-transition="none" data-background-transition="none" >
+        </section>
+      
+
+        <section data-transition="none" data-background-transition="none">
           <section>
-            <h2>Caching</h2>
-            <div class="code-block "></div>
-            <div class='fragment fade-up code-row'>
-              <div class="left-block">
-                <p style="text-align: right;">
-                  Pre cache all the files that we specify by some <code class='javascript hljs inline'>CACHE_FILES</code>
-                </p>
-              </div>
-              <div class="right-block">
-                <pre>
-                  <code class="javascript" data-trim contenteditable style="font-size: 1em;">
-                  const CACHE_VERSION = 'name-of-my-cache';
 
-                  const CACHE_FILES = [
-                    '/whatever-i-want-to-precache.jpg',
-                    '/static.html',
-                  ];
-
-                  let preCacheFunc = function(){
-                    return caches.open(CACHE_VERSION)
-                      .then(function (cache) {
-                        return cache.addAll(CACHE_FILES);
-                      })
-                  }
-
-                  </code>
-                </pre>
-              </div>
+            <h2>AB Testing</h2>
+            <div class="code-block ">
             </div>
-            <span class="fragment"></span>
-            <span class="fragment"></span>
-            
+            <!-- <span class="" > -->
             <div class="fragment fade-up code-row">
               <div class="left-block">
                 <p style="text-align: right;">
-                  Populate the cache on installing the worker
+                  Intercept incoming requests
                 </p>
               </div>
               <div class="right-block">
                 <pre>
-                  <code class="javascript" data-trim contenteditable style="font-size: 1em;" >
-                    self.addEventListener('install', function (event) { 
-                      event.waitUntil(preCacheFunc()) 
-                    })
-                  </code>
-                </pre>
-              </div>
-            </div>
-            
-              <aside class="notes">
-                <ul>
-                  <li>
-                    First let's setup a function called preCache
-                  </li>
-                  <li>
-                    listener to preCache right when the SW is installed
-                  </li>
-                  <li> install is required step on browser service worker API</li>
-          
-                </ul>
-              </aside>
-            </section>
-            <section data-transition="none" data-background-transition="none" >
-              <h2>Caching</h2>
-              <div class="code-block "></div>
-              <span class="fragment"></span>				
-              <div class='code-row fragment fade-up'>
-                <div class="left-block">
-                  <p style="text-align: right;">
-                    Set an event listener for any fetch on the scope of this service worker.
-                  </p>
-                </div>navigator.serviceW
-                <div class="right-block">
-                  <pre>
-                    <code class="javascript" data-trim contenteditable >
-                      self.addEventListener('fetch', function (event) {
-                        event.respondWith(grabFromCacheOrAdd(event.request))
-                      });
-                      
-                    </code>
-                  </pre>
-                </div>
-              </div>
-            <span class="fragment"></span>
-              
-              <!-- <span class="fragment"></span>				 -->
-            <div class='code-row fragment fade-up'>
-                <div class="left-block">
-                  <p style="text-align: right;">
-                    Now, we will try to get the request from cache, if it's not there we will add ALL requests to that cache specified by <code class='javascript hljs inline'>CACHE_VERSION</code>
-                    regardless if it was in preCache files or not
-                  </p>
-                </div>
-                <div class="right-block">
-                  <pre>
-                    <code class="javascript" data-trim contenteditable >
-                    async function grabFromCacheOrAdd(req) {
-                      // Open the cache to see if we have a matching response
-                      const cache = await caches.open(CACHE_VERSION)
-                      const matching = await cache.match(req)
-                      if (matching) return matching
-                      // NO matching response, fetch and put into cache
-                      const res = await fetch(req)
-                      await cache.put(req.url, res)
-                      return res
-                    }
-
-
-
-                    </code>
-                  </pre>
-                </div>
-              </div>
-              <aside class="notes">
-                <ul>
-                  <li>
-                    First let's setup an install listener to preCache right when the SW is installed
-                    
-                  </li>
-                  Keep in mind this is a totally bungues example. Caching EVERYTHING static and
-                  dynamic on your site is crazy and should probably only happen in special cases
-                  when your site is actually down, but jsut work with me here for illustrative purposes
-                  
-                </ul>
-              </aside>
-              <!-- </div> -->
-              
-            </section>		
-          </section>	
-          <section>
-            
-            <section>
-              <h2>Offline</h2>
-              <div>
-                
-                <img src="images/dino.png">
-              </div>
-            </section>
-            <section>
-                <h2>Offline</h2>
-                <div>
-                  
-                  <img src="images/404.png">
-                </div>
-              </section>
-            <section>
-                <h1>
-                  Demo
-                </h1>
-              </section>
-              <section data-transition="none" data-background-transition="none" >
-                  <h2>Offline</h2>
-              <div class="code-block "></div>
-              <span class="fragment"></span>
-              <div class='code-row fragment fade-up'>
-                <div class="left-block">
-                  <p style="text-align: right;">
-                    Warm cache with <code class='javascript hljs inline'> SAFETY_TMP</code>
-                    and<code class='javascript hljs inline'> ERROR_TMP</code>
-                  </p>
-                </div>
-                <div class="right-block">
-                  <pre>
-                    <code class="javascript" data-trim contenteditable >
-                      const SAFETY_TMP = 'src/safety.html'
-                      const ERROR_TMP = 'src/error.html'
-
-                      const CACHE_VERSION = 'name-of-my-cache';
-                      let preCacheFunc = function(){
-                        return caches.open(CACHE_VERSION)
-                          .then(function (cache) {
-                             return cache.addAll([SAFETY_TMP, ERROR_TMP])
-                          })
-                      }
-                    </code>
-                  </pre>
-                </div>
-              </div>
-              <span class="fragment"></span>				
-              <div class='code-row fragment fade-up'>
-                <div class="left-block">
-                  <p style="text-align: right;">
-                    Set an event listener for any fetch. If fails, return <code class='javascript hljs inline'>SAFETY_TMP</code>
-                  </p>
-                </div>
-                <div class="right-block">
-                  <pre>
-                    <code class="javascript" data-trim contenteditable >
-                    self.addEventListener('fetch', function (event) {
-                      return event.respondWith(fetch(event.request)
-                        .then(resp => {
-                          if (!resp.ok) {
-                            return grabFromCacheOrAdd(ERROR_TMP)
-                          }
-                          return resp
-                        })
-                        .catch(error => {
-                          return grabFromCacheOrAdd(SAFETY_TMP)
-                        })
-                      )}
-                    );
-                    </code>
-                  </pre>
-                </div>
-              </div>
-              <aside class="notes">
-                <ul>
-                  <li>Fetch promises only reject with a TypeError when a network error occurs. Since 4xx and 5xx responses
-                aren't network errors, there's nothing to catch. You'll need to throw an error yourself to use Promise#catch.
-                  </li>
-                  
-                </ul>
-              </aside>
-              <!-- </div> -->
-              
-            </section>		
-          </section>
-
-          <section data-transition="none" data-background-transition="none" >
-            <section>
-
-              <h2>AB Testing</h2>
-              <div class="code-block ">
-              </div>
-              <!-- <span class="" > -->
-                <div class="fragment fade-up code-row">
-                  <div class="left-block">
-                    <p style="text-align: right;">
-                      Intercept incoming requests
-                    </p>
-                  </div>
-                  <div class="right-block">
-                    <pre>
                       <code class="javascript" data-trim contenteditable style="font-size: 1em;" >
                         addEventListener('fetch', event => { 
                           event.respondWith(ABTestResponse(event.request)) 
                         });
                       </code>
                     </pre>
-                  </div>
-                </div>
-                <div class='fragment fade-up code-row'>
-                  <div class="left-block">
-                    <p style="text-align: right;">
-                      Set up a function to return the response for
-                    <code class='javascript hljs inline' contenteditable >/some-path</code> but really fetch
-                    <code class='javascript hljs inline' contenteditable >/control/some-path</code> or
-                    <code class='javascript hljs inline' contenteditable>/test/some-path</code>, depending on the cookie. Set the a cookie if there isn't one
-                    </p>
-                  </div>
-                <span class="fragment"></span>
-                  
-                  <div class="right-block">
-                    <pre>
+              </div>
+            </div>
+            <div class='fragment fade-up code-row'>
+              <div class="left-block">
+                <p style="text-align: right;">
+                  Set up a function to return the response for
+                  <code class='javascript hljs inline' contenteditable>/some-path</code> but really fetch
+                  <code class='javascript hljs inline' contenteditable>/control/some-path</code> or
+                  <code class='javascript hljs inline' contenteditable>/test/some-path</code>, depending on the
+                  cookie. Set the a cookie if there isn't one
+                </p>
+              </div>
+              <span class="fragment"></span>
+
+              <div class="right-block">
+                <pre>
                       <code class="javascript" data-trim contenteditable style="font-size: 1em;">
                         const name = 'experiment0'
                         async function ABTestResponse(request) { 
@@ -425,30 +186,33 @@
                         } 
                       </code>
                     </pre>
-                  </div>
-                </div>
-                <aside class="notes">
-                  <ul>
-                    <li>
-                      Determine which group this request is in. const cookie = request.headers.get('Cookie')
-                    </li>
-                    <li>
-                      We'll prefix the request path with the experiment name. This way, the origin server merely has to have two copies of the
-                      site under top-level directories named "control" and "test".
-                    </li>
-                    <li>
-                      Note that `url.pathname` always begins with a `/`, so we don't need to explicitly add one after `$\{group\}`..
-                    </li>
-                    <li>
-                      Note though you can use `set-cookier` in edge workers, this does not work with browser service workers yet. in the future
-                      there maybe API added to do This in browser
-                    </li>
-                  </ul>
-                </aside>
-            </section>
-          <section data-transition="none" data-background-transition="none" >
+              </div>
+            </div>
+            <aside class="notes">
+              <ul>
+                <li>
+                  Determine which group this request is in. const cookie = request.headers.get('Cookie')
+                </li>
+                <li>
+                  We'll prefix the request path with the experiment name. This way, the origin server merely has to
+                  have two copies of the
+                  site under top-level directories named "control" and "test".
+                </li>
+                <li>
+                  Note that `url.pathname` always begins with a `/`, so we don't need to explicitly add one after
+                  `$\{group\}`..
+                </li>
+                <li>
+                  Note though you can use `set-cookier` in edge workers, this does not work with browser service
+                  workers yet. in the future
+                  there maybe API added to do This in browser
+                </li>
+              </ul>
+            </aside>
+          </section>
+          <section data-transition="none" data-background-transition="none">
             <h2>AB Testing</h2>
-            <span class="fragment"></span>				
+            <span class="fragment"></span>
             <div class='code-row fragment fade-up'>
               <div class="left-block">
                 <p style="text-align: right;">
@@ -477,7 +241,7 @@
             </div>
             <!-- </div> -->
             <div class="code-block "></div>
-            <span class="fragment"></span>				
+            <span class="fragment"></span>
             <div class='code-row fragment fade-up'>
               <div class="left-block">
                 <p style="text-align: right;">
@@ -501,59 +265,61 @@
               </div>
             </div>
           </section>
-            
-        </section>			
-          <section data-transition="none" data-background-transition="none" >
-            <h2>CORs</h2>
-               Ever been really annoyed of developing with CORS errors ?
-               <img src="images/cors.png">
-            <aside class="notes">
-              <ul>
-              Service workers provide a hacky work around for dealing with CORS. One could communicate with whatever external host they
-              want by running a service worker that pretends to be that external host but on the host actually rnnning Ok, that sounded
+
+        </section>
+        <section data-transition="none" data-background-transition="none">
+          <h2>CORs</h2>
+          Ever been really annoyed of developing with CORS errors ?
+          <img src="images/cors.png">
+          <aside class="notes">
+            <ul>
+              Service workers provide a hacky work around for dealing with CORS. One could communicate with whatever
+              external host they
+              want by running a service worker that pretends to be that external host but on the host actually
+              rnnning Ok, that sounded
               confusing so let's see what that would actually look like
-              </ul>
-            </aside>
-          </section>					
-          <section>
-            <h2>CORs</h2>
-            <div class="code-block ">
-            </div>
-            <div class="fragment fade-up">
-              <div class='code-row'>
-                <div class="left-block">
-                  <p style="text-align: right;">
-                     You want to run: 
-                  </p>
-                </div>
-                <div class="right-block">
-                  <pre><code class="javascript" data-trim contenteditable style="font-size: 1em;">fetch('https://www.google.com') 
+            </ul>
+          </aside>
+        </section>
+        <section>
+          <h2>CORs</h2>
+          <div class="code-block ">
+          </div>
+          <div class="fragment fade-up">
+            <div class='code-row'>
+              <div class="left-block">
+                <p style="text-align: right;">
+                  You want to run:
+                </p>
+              </div>
+              <div class="right-block">
+                <pre><code class="javascript" data-trim contenteditable style="font-size: 1em;">fetch('https://www.google.com') 
 fetch('https://some-other-host-aint-me.com')</code></pre>
-                </div>
               </div>
             </div>
-            <div class="fragment fade-up">
-              <div class='code-row'>
-                <div class="left-block">
-                  <p style="text-align: right;">
-                    Instead I could call 
-                  </p>
-                </div>
-                <div class="right-block">
-                  <pre><code class="javascript" data-trim contenteditable style="font-size: 1em;">fetch('https://mysite.com/external/www.google.com') 
+          </div>
+          <div class="fragment fade-up">
+            <div class='code-row'>
+              <div class="left-block">
+                <p style="text-align: right;">
+                  Instead I could call
+                </p>
+              </div>
+              <div class="right-block">
+                <pre><code class="javascript" data-trim contenteditable style="font-size: 1em;">fetch('https://mysite.com/external/www.google.com') 
 fetch('https://mysite.com/external/some-other-host-aint-me.com')</code></pre>
-                </div>
               </div>
             </div>
-            <div class="fragment fade-up">
-              <div class='code-row'>
-                <div class="left-block">
-                  <p style="text-align: right;">
-                    Setup a path on your own domain to accept external requests
-                  </p>
-                </div>
-                <div class="right-block">
-                  <pre><code class="javascript" data-trim contenteditable style="font-size: 1em;">const myExtralsURI = '/external/'
+          </div>
+          <div class="fragment fade-up">
+            <div class='code-row'>
+              <div class="left-block">
+                <p style="text-align: right;">
+                  Setup a path on your own domain to accept external requests
+                </p>
+              </div>
+              <div class="right-block">
+                <pre><code class="javascript" data-trim contenteditable style="font-size: 1em;">const myExtralsURI = '/external/'
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
@@ -571,21 +337,21 @@ async function handleRequest(request) {
     headers,
   })
 }</code></pre>
-                </div>
               </div>
             </div>
-          </section>
-          <section data-transition="none" data-background-transition="none" >
-            <h2>So much more..</h2>
-            <ul>
-              <li>Performance</li>
-              <li>Push Notifications</li>
-              <li>Progressive Web Apps</li>
-            </ul>
-          </section>
-          <section data-transition="none" data-background-transition="none" >
-            <h1> Questions? Comments? </h1>
-          </section>
+          </div>
+        </section>
+        <section data-transition="none" data-background-transition="none">
+          <h2>So much more..</h2>
+          <ul>
+            <li>Performance</li>
+            <li>Storage</li>
+            <li></li>
+          </ul>
+        </section>
+        <section data-transition="none" data-background-transition="none">
+          <h1> Questions? Comments? </h1>
+        </section>
       </div>
 
     </div>
@@ -614,15 +380,15 @@ async function handleRequest(request) {
       // 		]
       // 	});
 
-      // More info https://github.com/hakimel/reveal.js#configuration
+      // More info https://github.com/hakimel/
 
-                        //make sure that Service Workers are supported.
+      //make sure that Service Workers are supported.
       // if(window.navigator && navigator.serviceWorker) {
       // 	navigator.serviceWorker.getRegistrations()
       // 	.then(function(registrations) {
       // 		console.log('mult')
       // 		console.log(registrations)
-        
+
       // 		for(let registration of registrations) {
       // 			registration.unregister();
       // 			console.log('regist')
@@ -630,19 +396,20 @@ async function handleRequest(request) {
       // 		}
       // 	});
       // 	}
-            if (navigator.serviceWorker) {
-                // navigator.serviceWorker.register('./service-worker.js', {scope: './'})
-                //     .then(function (registration) {
-                //         // console.log(registration);
-                //     })
-                //     .catch(function (e) {
-                //         console.error(e);
-                //     })
-            } else {
-                console.log('Service Worker is not supported in this browser.');
-            }
+      if (navigator.serviceWorker) {
+        // navigator.serviceWorker.register('./service-worker.js', {scope: './'})
+        //     .then(function (registration) {
+        //         // console.log(registration);
+        //     })
+        //     .catch(function (e) {
+        //         console.error(e);
+        //     })
+      } else {
+        console.log('Service Worker is not supported in this browser.');
+      }
 
     </script>
 
   </body>
+
 </html>

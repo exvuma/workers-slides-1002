@@ -3,7 +3,7 @@ require("reveal.js/lib/js/head.min.js")
 // require("./src/index.html");
 const Reveal = require('reveal.js')
 require('reveal.js/css/reveal.css')
-// require('reveal.js/css/theme/night.css')
+require('./workers-pres.css')
 require('reveal.js/css/theme/solarized.css')
 require('reveal.js/lib/css/zenburn.css')
 

@@ -42,7 +42,7 @@
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
         <section>
-          <h1>Putting Workers to Work</h1>
+          <h1>Working out Backend Knots with Workers</h1>
           <h3>Victoria Bernard</h3>
           <h3>Oct 2nd, 2018</h3>
           <p>
@@ -57,20 +57,6 @@
 
         <section>
           <img src="images/babyme.png" style="height:640px">
-        </section>
-        <section>
-          <section>
-            <h2>Local Computing</h2>
-            <img src="images/woman-computing.jpg">
-          </section>
-          <section>
-            <h2>Server Computing</h2>
-            <img src="images/cablefail.jpg">
-          </section>
-          <section>
-            <h2>Serverless Computing</h2>
-            <img src="images/Cloud-mine.png">
-          </section>
         </section>
         <section>
           <h2> Agenda</h2>
@@ -97,6 +83,9 @@
             </ul>
           </aside>
         </section>
+
+
+
         <section>
           <h2>What do workers do? </h2>
           <ul>
@@ -122,16 +111,89 @@
 
           </section>
           <section>
+            <h2>Local Computing</h2>
+            <img src="images/woman-computing.jpg">
+          </section>
+          <section>
             <h1>Service Workers</h1>
             <img src="images/browser-diagram.png">
+          </section>
+          <section>
+            <h2>Server Computing</h2>
+            <img src="images/cablefail.jpg">
+          </section>
+          <section>
+            <h2>Serverless Computing</h2>
+            <img src="images/Cloud-mine.png">
           </section>
           <section>
             <h1>Cloudflare Workers</h1>
             <img src="images/workers-diagram.png">
           </section>
         </section>
-      
 
+
+        <section data-transition="none" data-background-transition="none">
+          <section>
+
+            <h2>Silly Example</h2>
+            <div class="code-block ">
+            </div>
+            <!-- <span class="" > -->
+            <div class="fragment fade-up code-row">
+              <div class="left-block">
+                <p style="text-align: right;">
+                  Intercept incoming requests with a handler - <code class='javascript hljs inline' contenteditable>fetchAndFlip</code>
+                </p>
+              </div>
+              <div class="right-block">
+                <pre>
+                    <code class="javascript" data-trim contenteditable style="font-size: 1em;" >
+                      addEventListener('fetch', event => {
+                      event.respondWith(fetchAndFlip(event.request))
+                      })
+                    </code>
+                    </pre>
+              </div>
+            </div>
+            <div class="code-block ">
+            </div>
+            <!-- <span class="" > -->
+            <div class="fragment fade-up code-row">
+              <div class="left-block">
+                <p style="text-align: right;">
+                  Define the function, <code class='javascript hljs inline' contenteditable>fetchAndFlip</code>, that injects a style to flip any html or text from the site
+                </p>
+              </div>
+              <div class="right-block">
+                <pre>
+                    <code class="javascript" data-trim contenteditable style="font-size: 1em;" >
+
+                        async function fetchAndFlip(request) {
+                        const response = await fetch(request)
+
+                        // Make sure we only modify text, not images.
+                        let type = response.headers.get("Content-Type") || ""
+                        if (!type.startsWith("text/")) {
+                          return response
+                        }
+
+                        let text = await response.text()
+                        text = text.replace("&lt;/head&gt;",
+                        `&lt;style&gt;
+                          body {
+                            transform: rotate(180deg);
+                          }
+                        &lt;/style&gt;
+                        &lt;/head&gt;`)
+
+                        return new Response(text,response)
+                        }
+                    </code></pre>
+              </div>
+            </div>
+          </section>
+        </section>
         <section data-transition="none" data-background-transition="none">
           <section>
 
